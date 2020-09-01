@@ -30,6 +30,10 @@ class TestStatus(unittest.TestCase):
 
 
     def test_status(self):
+        """
+        Test components online status
+        """
+
         url = "https://status.educationincites.com"
         self.driver.get(url)
         # response = requests.get(url, verify=False) #in case ctls fails to update cert use this
@@ -42,8 +46,8 @@ class TestStatus(unittest.TestCase):
             for i in range(2,total):
                 element_title = self.driver.find_element_by_xpath('//table[@class=\'table\']//tr[' + str(i) + ']/td[1]').text
                 element_state = self.driver.find_element_by_xpath('//table[@class=\'table\']//tr[' + str(i) + ']/td[2]').text
-                print( element_title + ": " + element_state)
-                self.assertEqual(element_state, "Online", element_title + " is offline!")
+                with self.subTest(i=element_title):
+                    self.assertEqual(element_state, "Online", element_title + " is offline!")
         except NoSuchElementException as ex:
             self.fail('Unable to determine status')
 
